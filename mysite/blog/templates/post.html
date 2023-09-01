@@ -1,22 +1,25 @@
 {% extends "base.html" %}
 
-{% block "title" %}Mano tinklaraštis: Straipsniai{% endblock %}
+{% block "title" %}Mano tinklaraštis: Straipsnis{% endblock %}
 
 {% block "content" %}
 
-{% for post in posts %}
 <article class="media content-section">
     <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2">{{ post.user }}</a>
             <small class="text-muted">{{ post.created|date:"Y-m-d, f" }}</small>
             <h2><a class="article-title">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content|truncatewords:"30"}}</p>
-            <p class="card-text"><a href="{{ post.pk }}">Skaityti daugiau</a></p>
+            <p class="article-content">{{ post.content }}</p>
             <a>Komentarų: {{ post.num_comments }}</a>
         </div>
         <hr>
+        <h4>Komentarai:</h4>
+        {% for comment in post.comments.all %}
+        <small class="text-muted">{{ comment.user }}, {{ comment.created|date:"Y-m-d, f" }}</small>
+        <p>{{ comment.content }}</p>
+        {% endfor %}
     </div>
 </article>
-{% endfor %}
+
 {% endblock %}

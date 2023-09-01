@@ -13,6 +13,9 @@ class Post(models.Model):
     def num_comments(self):
         return self.comments.count()
 
+    class Meta:
+        ordering = ["-created"]
+
 class Comment(models.Model):
     content = models.TextField(verbose_name="Tekstas", max_length=1000)
     created = models.DateTimeField(verbose_name="Sukūrimo data", auto_now_add=True)
