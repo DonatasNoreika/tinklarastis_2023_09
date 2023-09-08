@@ -17,7 +17,7 @@
         <h4>Komentarai:</h4>
         {% for comment in post.comments.all %}
         <small class="text-muted">{{ comment.user }}, {{ comment.created|date:"Y-m-d, f" }}</small>
-        <p>{{ comment.content }}</p>
+        <p>{{ comment.content|safe }}</p>
         {% endfor %}
     </div>
 </article>
