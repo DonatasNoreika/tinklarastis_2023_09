@@ -25,3 +25,6 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ["-created"]
+
+class Image(models.Model):
+    photo = models.ImageField(verbose_name="Nuotrauka", upload_to="post_photos", null=True, blank=True)
