@@ -51,6 +51,9 @@
                 </li>
                 {% else %}
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Registruotis</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">Prisijungti</a>
                 </li>
                 {% endif %}
@@ -58,6 +61,17 @@
         </div>
     </div>
 </nav>
+
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'info' %}success{% endif %}"
+         role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
 
 <div class="container">
     {% block "content" %}{% endblock %}
