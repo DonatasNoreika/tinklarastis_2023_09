@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:pk>', views.PostDetailView.as_view(), name='post'),
     path('userposts/', views.UserPostListView.as_view(), name='userposts'),
     path('register/', views.register, name='register'),
+    path('search/', views.search, name='search'),
 ]

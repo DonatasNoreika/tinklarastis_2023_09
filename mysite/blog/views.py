@@ -78,3 +78,10 @@ def register(request):
             return redirect('register')
     else:
         return render(request, 'registration/register.html')
+
+from django.db.models import Q
+
+def search(request):
+    query = request.GET.get('query')
+    search_results = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
+    return render(request, 'search.html', {'posts': search_results, 'query': query})

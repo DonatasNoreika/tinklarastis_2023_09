@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block "content" %}
+  <h1>Paieškos pagal "{{query}}" rezultatai:</h1>
+  </br>
+  {% if posts %}
+  <ul>
+    {% for post in posts %}
+      <li>
+        <a href="{% url 'post' post.id %}">{{ post.title }}</a> ({{post.user}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>Oops. Nieko neradome :(</p>
+  {% endif %}
+
+  {% endblock %}
