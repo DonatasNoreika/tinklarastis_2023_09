@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse, redirect
 from django.views import generic
-from .models import Post
+from .models import Post, Comment
 from django.views.generic.edit import FormMixin
 from .forms import CommentForm
 from django.views.decorators.csrf import csrf_protect
@@ -85,3 +85,12 @@ def search(request):
     query = request.GET.get('query')
     search_results = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
     return render(request, 'search.html', {'posts': search_results, 'query': query})
+
+class UserCommentListView(LoginRequiredMixin, generic.ListView):
+    model = Comment
+    context_object_name = "comments"
+    template_name = "usercomments.html"
+
+    def get_queryset(self):
+        return Comment.objects.filter(user=self.request.user)
+

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block "title" %}Mano tinklaraštis: Mano komentarai{% endblock %}
+
+{% block "content" %}
+
+<article class="media content-section">
+    <div class="media-body">
+        <h1>Komentarai:</h1>
+        {% for comment in comments %}
+        <small class="text-muted">{{ comment.user }}, {{ comment.created|date:"Y-m-d, f" }}</small>
+        <p>{{ comment.content|safe }}</p>
+        <hr>
+        {% endfor %}
+    </div>
+</article>
+
+{% endblock %}
