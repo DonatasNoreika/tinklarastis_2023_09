@@ -9,9 +9,7 @@
   {% endif %}
 
   {% if next %}
-    {% if user.is_authenticated %}
       <p>Neturite prieigos prie šios informacijos. Turite prisijungti.</p>
-    {% endif %}
   {% endif %}
 
   <form method="post" action="{% url 'login' %}">

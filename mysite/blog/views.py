@@ -6,6 +6,7 @@ from .forms import CommentForm
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.forms import User
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 class PostListView(generic.ListView):
@@ -13,6 +14,15 @@ class PostListView(generic.ListView):
     context_object_name = "posts"
     template_name = "posts.html"
     paginate_by = 5
+
+class UserPostListView(LoginRequiredMixin, generic.ListView):
+    model = Post
+    context_object_name = "posts"
+    template_name = "userposts.html"
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Post.objects.filter(user=self.request.user)
 
 
 class PostDetailView(FormMixin, generic.DetailView):
