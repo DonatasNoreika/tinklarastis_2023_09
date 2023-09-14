@@ -2,8 +2,15 @@
 {% block "title" %}Mano tinklaraštis: Straipsnio kūrimas/redagavimas{% endblock %}
 {% load crispy_forms_tags %}
 {% block "content" %}
-    <div class="content-section">
+<div class="content-section">
     <form method="POST">
+        <script>
+            tinymce.init({
+                selector: '#id_content',
+                plugins : 'advlist autolink link image lists charmap print preview code',
+                toolbar1: ' fullscreen preview bold italic underline | fontselect, fontsizeselect  | forecolor backcolor | alignleft alignright | aligncenter alignjustify | indent outdent | bullist numlist table | link image media | codesample | code |',
+            });
+        </script>
         {% csrf_token %}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Straipsnio kūrimas/redagavimas</legend>
@@ -13,5 +20,5 @@
             <button class="btn btn-outline-info" type="submit">Išsaugoti</button>
         </div>
     </form>
-    </div>
+</div>
 {% endblock %}
