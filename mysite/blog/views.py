@@ -153,3 +153,22 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteV
 
     def test_func(self):
         return self.get_object().user == self.request.user
+
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Comment
+    template_name = "comment_edit.html"
+    context_object_name = 'comment'
+    fields = ['content']
+
+    def get_success_url(self):
+        return reverse('post', kwargs={"pk": self.kwargs['post_id']})
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.post = Post.objects.get(pk=self.kwargs['post_id'])
+        form.save()
+        return super().form_valid(form)
