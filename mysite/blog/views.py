@@ -8,6 +8,7 @@ from django.contrib.auth.forms import User
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
+
 # Create your views here.
 
 @csrf_protect
@@ -40,12 +41,15 @@ def register(request):
     else:
         return render(request, 'registration/register.html')
 
+
 from django.db.models import Q
+
 
 def search(request):
     query = request.GET.get('query')
     search_results = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
     return render(request, 'search.html', {'posts': search_results, 'query': query})
+
 
 class UserCommentListView(LoginRequiredMixin, generic.ListView):
     model = Comment
@@ -55,11 +59,13 @@ class UserCommentListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return Comment.objects.filter(user=self.request.user)
 
+
 class PostListView(generic.ListView):
     model = Post
     context_object_name = "posts"
     template_name = "posts.html"
     paginate_by = 5
+
 
 class UserPostListView(LoginRequiredMixin, generic.ListView):
     model = Post
@@ -117,3 +123,20 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView
     def test_func(self):
         return self.get_object().user == self.request.user
 
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Post
+    template_name = "post_form.html"
+    fields = ['title', 'content']
+    context_object_name = 'post'
+
+    def get_success_url(self):
+        return reverse('post', kwargs={"pk": self.kwargs['pk']})
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.save()
+        return super().form_valid(form)
