@@ -6,7 +6,7 @@ from .forms import CommentForm
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.forms import User
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # Create your views here.
 
@@ -106,4 +106,14 @@ class PostCreateView(LoginRequiredMixin, generic.CreateView):
         form.instance.user = self.request.user
         form.save()
         return super().form_valid(form)
+
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Post
+    success_url = "/"
+    template_name = "post_delete.html"
+    context_object_name = 'post'
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
 
