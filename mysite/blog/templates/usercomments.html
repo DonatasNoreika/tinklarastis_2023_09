@@ -8,8 +8,14 @@
     <div class="media-body">
         <h1>Komentarai:</h1>
         {% for comment in comments %}
+        <small class="text-muted">Straipsnis: {{ comment.post.title }} </small>
+        <br>
         <small class="text-muted">{{ comment.user }}, {{ comment.created|date:"Y-m-d, f" }}</small>
         <p>{{ comment.content|safe }}</p>
+        <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'usercomment_edit' comment.id %}">Redaguoti</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'usercomment_delete' comment.id %}">Ištrinti</a>
+        </div>
         <hr>
         {% endfor %}
     </div>

@@ -155,6 +155,36 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteV
         return self.get_object().user == self.request.user
 
 
+class UserCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Comment
+    template_name = "comment_delete.html"
+    context_object_name = 'comment'
+
+    def get_success_url(self):
+        return reverse("usercomments")
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+
+class UserCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Comment
+    template_name = "comment_edit.html"
+    context_object_name = 'comment'
+    fields = ['content']
+
+    def get_success_url(self):
+        return reverse("usercomments")
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.post = self.get_object().post
+        form.save()
+        return super().form_valid(form)
+
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Comment
     template_name = "comment_edit.html"
