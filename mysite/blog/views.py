@@ -140,3 +140,16 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView
         form.instance.user = self.request.user
         form.save()
         return super().form_valid(form)
+
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Comment
+    # success_url = "/"
+    template_name = "comment_delete.html"
+    context_object_name = 'comment'
+
+    def get_success_url(self):
+        return reverse('post', kwargs={"pk": self.kwargs['post_id']})
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
