@@ -2,7 +2,7 @@ from django.shortcuts import render, reverse, redirect
 from django.views import generic
 from .models import Post, Comment
 from django.views.generic.edit import FormMixin
-from .forms import CommentForm
+from .forms import CommentForm, UserUpdateForm, ProfileUpdateForm
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.forms import User
 from django.contrib import messages
@@ -172,3 +172,23 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateV
         form.instance.post = Post.objects.get(pk=self.kwargs['post_id'])
         form.save()
         return super().form_valid(form)
+
+
+def profile(request):
+    if request.method == "POST":
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f"Profilis atnaujintas")
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form,
+    }
+    return render(request, 'profile.html', context)
