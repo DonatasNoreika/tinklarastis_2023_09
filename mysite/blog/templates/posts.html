@@ -9,6 +9,7 @@
     <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2">{{ post.user }}</a>
+            <img class="rounded-circle" style="width:2%"  src="{{ post.user.profile.image.url }}">
             <small class="text-muted">{{ post.created|date:"Y-m-d, f" }}</small>
             <h2><a class="article-title">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content|truncatewords:"30"|safe}}</p>
