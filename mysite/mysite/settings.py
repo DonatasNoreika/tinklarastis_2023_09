@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from .my_settings import SECRET_KEY, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEBUG, ALLOWED_HOSTS
+from .my_settings import SECRET_KEY, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEBUG, ALLOWED_HOSTS, STATIC_ROOT, STATIC_URL
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -173,3 +173,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'blog/media')
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+STATIC_ROOT = STATIC_ROOT
+
+STATIC_URL = STATIC_URL
